@@ -9,11 +9,13 @@ if (!isset($_GET['k']) || $_GET['k'] !== $key) {
 require_once './app/db.php';
 require_once './functions.php';
 
+$webhookUrl = $hostB24.$hookMsg.'/im.notify';
 
-$lastPage = $db->query('SELECT last_page FROM `settings`');
-$lastPage = $lastPage->fetch(PDO::FETCH_ASSOC);
-$page = $lastPage['last_page'];
+// $lastPage = $db->query('SELECT last_page FROM `settings`');
+// $lastPage = $lastPage->fetch(PDO::FETCH_ASSOC);
+// $page = $lastPage['last_page'];
 
+$page = 0;
 $baseUrl = $url;
 
 while (true) {
@@ -22,16 +24,16 @@ while (true) {
 	$tasks = json_decode($tasks);
 
 	if (empty($tasks->result->tasks)) {
-		$query = "UPDATE `settings`
-					SET last_page = :last_page
-					WHERE id = 1";
+		// $query = "UPDATE `settings`
+		// 			SET last_page = :last_page
+		// 			WHERE id = 1";
 
-		$stmt = $db->prepare($query);
-		$stmt->execute([
-			':last_page' => $page
-		]);
+		// $stmt = $db->prepare($query);
+		// $stmt->execute([
+		// 	':last_page' => $page
+		// ]);
 
-		exit();
+		exit('END');
 	}
 
 
@@ -65,6 +67,7 @@ while (true) {
 
 		if (!empty($dataOfTask)) {
 			insertTaskDB($dataOfTask, $db);
+      sendNotifyB24($webhookUrl, $v->responsible->id, 'Вас депремировали, детали в задаче: '.	$linkTask = $hostB24.'/company/personal/user/'.$v->responsible->id.'/tasks/task/view/'.$v->id.'/');
 			$dataOfTask = [];
 		}
 	  }

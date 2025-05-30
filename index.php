@@ -45,5 +45,5 @@ foreach ($tasks as $k => $v) {
 
 fclose($csvFile);
 
-sendNotifyB24($webhookUrl, $taskShowForId, 'Ссылка на таблицу депримирования:  ' . $downloadPath.$tableName);
+sendNotifyB24($webhookUrl, $taskShowForId, 'Ссылка на таблицу депримирования:  ' . $hostOfHosting.'/results.php?k='.$key);
 exit();
