@@ -1,10 +1,26 @@
 <?php
 
+ini_set('display_errors', 1);
+ini_set('display_startup_errors', 1);
+error_reporting(E_ALL);
+
 require_once './config.php';
 
-if (!isset($_GET['k']) || $_GET['k'] !== $key) {
+session_start();
+
+$referer = $_SERVER['HTTP_REFERER'] ?? '';
+
+$fromLink = parse_url($referer);
+
+if (@$fromLink['host'] == $hostB24) {
+	$_SESSION['check'] = true;
+}
+
+if (!isset($_GET['k']) || $_GET['k'] !== $key) { //|| !$_SESSION['check']) {
   exit();
 }
+
+
 
 require_once './app/db.php';
 
@@ -44,11 +60,12 @@ $tasks = $stmt->fetchAll();
         <div class="col-md-3">
             <input type="text" name="responsible" class="form-control" placeholder="Ответственный" value="<?= htmlspecialchars($_GET['responsible'] ?? '') ?>">
         </div>
+		<input type="text" value="<?=$key;?>" name="k" style="display: none;">
         <div class="col-md-2">
             <button type="submit" class="btn btn-primary w-100">Фильтровать</button>
         </div>
         <div class="col-md-2">
-            <a href="?" class="btn btn-secondary w-100">Сбросить</a>
+            <a href="?k=<?=$key;?>" class="btn btn-secondary w-100">Сбросить</a>
         </div>
     </form>
 
@@ -78,4 +95,31 @@ $tasks = $stmt->fetchAll();
             <?php endforeach ?>
         </tbody>
     </table>
+	
+	<div class="col-md-2">
+		<button type="button" onclick="printTable()" class="btn btn-success w-100">Печать</button>
+	</div>
+	
+	<script>
+		function printTable() {
+			const tableHtml = document.querySelector('table').outerHTML;
+			const style = `
+				<style>
+					table { border-collapse: collapse; width: 100%; }
+					th, td { border: 1px solid #000; padding: 8px; }
+					th { background: #f8f9fa; }
+				</style>
+			`;
+			const win = window.open('', '', 'height=700,width=900');
+			win.document.write('<html><head><title>Печать таблицы</title>');
+			win.document.write(style);
+			win.document.write('</head><body>');
+			win.document.write(tableHtml);
+			win.document.write('</body></html>');
+			win.document.close();
+			win.print();
+		}
+	</script>
+
+
 </div>
