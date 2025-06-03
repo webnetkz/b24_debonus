@@ -58,7 +58,7 @@ while (true) {
 
       if (!empty($dataOfTask)) {
         insertTaskDB($dataOfTask, $db);
-        //sendNotifyB24($webhookUrl, $v->responsible->id, 'Вас депремировали, детали в задаче: '.	$linkTask = $hostB24.'/company/personal/user/'.$v->responsible->id.'/tasks/task/view/'.$v->id.'/');
+        sendNotifyB24($webhookUrl, $v->responsible->id, 'Вас депремировали, детали в задаче: '.	$linkTask = $hostB24.'/company/personal/user/'.$v->responsible->id.'/tasks/task/view/'.$v->id.'/');
         $dataOfTask = [];
       }
 	  } else {
@@ -66,7 +66,7 @@ while (true) {
 
       $SQL = "UPDATE tasks SET price = price + {$fixPrice} WHERE b_id = '{$result['b_id']}'";
       $db->query($SQL);	  
-      //sendNotifyB24($webhookUrl, $result['responsible_id'], 'Вас повторно депремировали, детали в задаче: '.	$linkTask = $hostB24.'/company/personal/user/'.$result['responsible_id'].'/tasks/task/view/'.$v->id.'/');
+      sendNotifyB24($webhookUrl, $result['responsible_id'], 'Вас повторно депремировали, детали в задаче: '.	$linkTask = $hostB24.'/company/personal/user/'.$result['responsible_id'].'/tasks/task/view/'.$result['b_id'].'/');
     }
 	}
 
