@@ -31,15 +31,15 @@ while (true) {
 	foreach($tasks->result->tasks as $k => $v) {
 		$stmt = $db->query("SELECT `b_id`, `responsible_id` FROM `tasks` WHERE `b_id` = '" . $v->id . "'");
 		$result = $stmt->fetch();
+
+    if (@$matches[1]) {
+      $price = $matches[1];
+    } else {
+      $price = $fixPrice;
+    }
 		
 	  if (!$result && $v->subStatus == '-1') {
 		  preg_match('/!(.*?)!/', $v->title, $matches);
-
-      if (@$matches[1]) {
-        $price = $matches[1];
-      } else {
-        $price = $fixPrice;
-      }
 
       $linkTask = $hostB24.'/company/personal/user/'.$taskShowForId.'/tasks/task/view/'.$v->id.'/';
       $month = (new DateTime($v->deadline))->format('n');
@@ -64,10 +64,10 @@ while (true) {
 	  } 
 
     if ($result) {
-		  $fixPrice = (int)$fixPrice;
+		  $price = (int)$price;
 
 
-      $SQL = "UPDATE tasks SET price = price + {$fixPrice} WHERE b_id = '".$result['b_id']."'";
+      $SQL = "UPDATE tasks SET price = price + {$price} WHERE b_id = '".$result['b_id']."'";
       $db->query($SQL);	  
       sendNotifyB24($webhookUrl, $result['responsible_id'], 'Вас повторно депремировали, детали в задаче: '.	$linkTask = $hostB24.'/company/personal/user/'.$result['responsible_id'].'/tasks/task/view/'.$result['b_id'].'/');
     }

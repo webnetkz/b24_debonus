@@ -21,7 +21,6 @@ if (!isset($_GET['k']) || $_GET['k'] !== $key) { //|| !$_SESSION['check']) {
 }
 
 
-
 require_once './app/db.php';
 
 
@@ -51,6 +50,8 @@ $tasks = $stmt->fetchAll();
 ?>
 
 <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.10.5/font/bootstrap-icons.css">
+
 
 <div class="container mt-4">
     <form method="get" class="row mb-4">
@@ -79,6 +80,7 @@ $tasks = $stmt->fetchAll();
                 <th>Постановщик</th>
                 <th>Морали</th>
                 <th>Ссылка на задачу</th>
+                <th></th>
             </tr>
         </thead>
         <tbody>
@@ -91,6 +93,9 @@ $tasks = $stmt->fetchAll();
                     <td><?= $v['creator'] ?></td>
                     <td><?= $v['price'] ?></td>
                     <td><a href="<?= $v['link'] ?>" target="_blank">Открыть задачу</a></td>
+                    <td>
+                      <i class="bi bi-trash"></i>
+                    </td>
                 </tr>
             <?php endforeach ?>
         </tbody>
