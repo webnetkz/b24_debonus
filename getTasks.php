@@ -32,6 +32,7 @@ while (true) {
 		$stmt = $db->query("SELECT `b_id`, `responsible_id` FROM `tasks` WHERE `b_id` = '" . $v->id . "'");
 		$result = $stmt->fetch();
 
+    preg_match('/!(.*?)!/', $v->title, $matches);
     if (@$matches[1]) {
       $price = $matches[1];
     } else {
@@ -39,8 +40,6 @@ while (true) {
     }
 		
 	  if (!$result && $v->subStatus == '-1') {
-		  preg_match('/!(.*?)!/', $v->title, $matches);
-
       $linkTask = $hostB24.'/company/personal/user/'.$taskShowForId.'/tasks/task/view/'.$v->id.'/';
       $month = (new DateTime($v->deadline))->format('n');
       $dataOfTask = [];
