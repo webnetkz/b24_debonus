@@ -62,7 +62,7 @@ while (true) {
       }
 	  } 
 
-    if ($result) {
+    if ($result && $v->subStatus == '-1') {
 		  $price = (int)$price;
 
 
