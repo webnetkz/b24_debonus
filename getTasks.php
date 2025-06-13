@@ -52,7 +52,8 @@ while (true) {
         'responsible' => $v->responsible->name,
         'creator' => $v->creator->name,
         'link' => $linkTask,
-        'month' => $month
+        'month' => $month,
+        'responsible_id' => $v->responsible->id,
       ];
 
       if (!empty($dataOfTask)) {
@@ -67,8 +68,9 @@ while (true) {
 
 
       $SQL = "UPDATE tasks SET price = price + {$price} WHERE b_id = '".$result['b_id']."'";
-      $db->query($SQL);	  
+      $db->query($SQL);
       sendNotifyB24($webhookUrl, $result['responsible_id'], 'Вас повторно депремировали, детали в задаче: '.	$linkTask = $hostB24.'/company/personal/user/'.$result['responsible_id'].'/tasks/task/view/'.$result['b_id'].'/');
+      sendNotifyB24($webhookUrl, $taskShowForId, 'Просрочена задача: '. $result['b_id'] .', исполнитель: ' .$result['responsible']);
     }
 	}
 
