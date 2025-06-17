@@ -29,7 +29,7 @@ while (true) {
 
 
 	foreach($tasks->result->tasks as $k => $v) {
-		$stmt = $db->query("SELECT `b_id`, `responsible_id` FROM `tasks` WHERE `b_id` = '" . $v->id . "'");
+		$stmt = $db->query("SELECT `b_id`, `responsible`, `responsible_id` FROM `tasks` WHERE `b_id` = '" . $v->id . "'");
 		$result = $stmt->fetch();
 
     preg_match('/!(.*?)!/', $v->title, $matches);
